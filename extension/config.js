@@ -93,6 +93,10 @@ const DEFAULT_SETTINGS = {
   stableFrames: 5,       // consecutive frames required before a gesture is accepted
   mirror: true,
   showSkeleton: true,
+  pinch: {
+    brightness: true, // left-hand pinch -> screen brightness (master toggle)
+    volume: true      // right-hand pinch -> speaker volume (master toggle)
+  },
   gaming: DEFAULT_GAMING
 };
 
@@ -107,6 +111,7 @@ function loadSettings() {
         ...stored,
         mapping: { ...DEFAULT_SETTINGS.mapping, ...(stored.mapping || {}) },
         enabled: { ...DEFAULT_SETTINGS.enabled, ...(stored.enabled || {}) },
+        pinch: { ...DEFAULT_SETTINGS.pinch, ...(stored.pinch || {}) },
         gaming: { ...DEFAULT_SETTINGS.gaming, ...(stored.gaming || {}) }
       });
     });

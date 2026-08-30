@@ -109,6 +109,10 @@ open palm doesn't fire its own mapped key. The pill shows the live level
 (`Volume 43%`). To swap hands, edit `PINCH_CONTROLS` in
 `extension/config.js`.
 
+Each slider can be turned on/off independently from the popup's
+**General → Pinch controls** section (Brightness / Volume checkboxes) —
+disabled channels ignore that hand's pinch completely.
+
 The server executes these with the best tool available per OS — no extra
 setup on Windows (pycaw/WMI) and macOS (osascript). On **Linux** install
 `brightnessctl` for brightness (uses logind — no root needed for users in
@@ -258,6 +262,8 @@ python server.py --test-keys        # test key simulation and exit
   *same* pose.
 - **Mirror camera preview** — flips the preview so it feels like a mirror;
   detection itself is unaffected either way.
+- **Pinch controls** — enable/disable the brightness (left hand) and volume
+  (right hand) pinch sliders independently.
 
 ## How the pose classifier works
 

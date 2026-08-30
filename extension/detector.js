@@ -305,13 +305,17 @@ function pinchDistance(hand) {
   return ptDist(kp[4], kp[8]) / handSize;     // thumb tip <-> index tip
 }
 
+function pinchChannelEnabled(channel) {
+  return !settings.pinch || settings.pinch[channel] !== false;
+}
+
 function handlePinchControls() {
   let anyLatched = false;
   const seen = new Set();
 
   for (const hand of hands) {
     const channel = PINCH_CONTROLS[hand.handedness];
-    if (!channel) continue;
+    if (!channel || !pinchChannelEnabled(channel)) continue;
     seen.add(hand.handedness);
 
     const st = pinchState[channel] || (pinchState[channel] = { latched: false, lastSent: -1, lastSentAt: 0 });
@@ -346,10 +350,13 @@ function handlePinchControls() {
     gesturePill.className = "pill pill-active";
   }
 
-  // Hand left the frame: release its channel (the level stays where it was).
+  // Hand left the frame, or its channel was just disabled: release the
+  // channel (the level stays where it was).
   for (const [handedness, channel] of Object.entries(PINCH_CONTROLS)) {
     const st = pinchState[channel];
-    if (st && st.latched && !seen.has(handedness)) st.latched = false;
+    if (st && st.latched && (!seen.has(handedness) || !pinchChannelEnabled(channel))) {
+      st.latched = false;
+    }
   }
   return anyLatched;
 }

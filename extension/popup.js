@@ -26,6 +26,8 @@ const els = {
   tapRefractoryMsVal: document.getElementById("tapRefractoryMsVal"),
   swipeSensitivity: document.getElementById("swipeSensitivity"),
   swipeSensitivityVal: document.getElementById("swipeSensitivityVal"),
+  pinchBrightness: document.getElementById("pinchBrightness"),
+  pinchVolume: document.getElementById("pinchVolume"),
 
   openGamingBtn: document.getElementById("openGamingBtn"),
   steerLeftKey: document.getElementById("steerLeftKey"),
@@ -134,6 +136,8 @@ function renderBehavior(settings) {
   els.tapRefractoryMsVal.textContent = settings.tapRefractoryMs ?? 600;
   els.swipeSensitivity.value = settings.swipeSensitivity ?? 25;
   els.swipeSensitivityVal.textContent = settings.swipeSensitivity ?? 25;
+  els.pinchBrightness.checked = settings.pinch ? settings.pinch.brightness !== false : true;
+  els.pinchVolume.checked = settings.pinch ? settings.pinch.volume !== false : true;
 }
 
 // Bind inputs: click/focus to start listening for a keypress, Escape clears.
@@ -286,6 +290,14 @@ async function init() {
   els.swipeSensitivity.addEventListener("input", () => {
     els.swipeSensitivityVal.textContent = els.swipeSensitivity.value;
     currentSettings.swipeSensitivity = Number(els.swipeSensitivity.value);
+    queueSave();
+  });
+  els.pinchBrightness.addEventListener("change", () => {
+    currentSettings.pinch.brightness = els.pinchBrightness.checked;
+    queueSave();
+  });
+  els.pinchVolume.addEventListener("change", () => {
+    currentSettings.pinch.volume = els.pinchVolume.checked;
     queueSave();
   });
 
