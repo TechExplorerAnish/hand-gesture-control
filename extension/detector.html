@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Hand Gesture Control — Camera</title>
+<link rel="stylesheet" href="detector.css" />
+</head>
+<body>
+  <div class="topbar">
+    <span id="wsPill" class="pill pill-fail">Server: disconnected</span>
+    <span id="modePill" class="pill pill-mode">—</span>
+    <span id="gesturePill" class="pill pill-idle">—</span>
+  </div>
+  <div id="canvasHolder"></div>
+  <div class="bottombar">
+    <span id="modelStatus">Loading model…</span>
+  </div>
+
+  <script src="lib/p5.min.js"></script>
+  <script src="lib/ml5.min.js"></script>
+  <script src="config.js"></script>
+  <script src="detector.js"></script>
+</body>
+</html>

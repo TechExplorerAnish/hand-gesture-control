@@ -1,0 +1,32 @@
+:root{
+  --bg:#0b0e11;
+  --line:#1f262d;
+  --text:#e6e6eb;
+  --muted:#8a94a0;
+  --accent:#00e5c7;
+  --amber:#ffb020;
+  --danger:#ff5d5d;
+  --mono: "SFMono-Regular", "JetBrains Mono", Consolas, monospace;
+}
+*{ box-sizing:border-box; }
+html,body{ margin:0; background:var(--bg); color:var(--text); font-family:var(--mono); overflow:hidden; }
+
+.topbar{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:8px 10px; border-bottom:1px solid var(--line);
+}
+.bottombar{
+  padding:6px 10px; border-top:1px solid var(--line);
+  font-size:11px; color:var(--muted);
+}
+.pill{
+  font-size:11px; padding:4px 9px; border-radius:999px; border:1px solid var(--line);
+}
+.pill-ok{ color:#04211d; background:var(--accent); border-color:var(--accent); }
+.pill-fail{ color:#2a0d0d; background:var(--danger); border-color:var(--danger); }
+.pill-idle{ color:var(--muted); }
+.pill-active{ color:#241800; background:var(--amber); border-color:var(--amber); font-weight:700; }
+.pill-mode{ color:#0b0e11; background:#e6e6eb; border-color:#e6e6eb; font-weight:700; }
+
+#canvasHolder{ display:flex; justify-content:center; }
+#canvasHolder canvas{ display:block; }

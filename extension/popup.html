@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Hand Gesture Control</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+
+<body>
+  <header class="hd">
+    <svg class="hd-mark" viewBox="0 0 48 48" width="28" height="28" aria-hidden="true">
+      <circle cx="24" cy="30" r="11" fill="#e6e6eb" />
+      <line x1="18" y1="21" x2="14" y2="8" class="hd-finger" />
+      <line x1="21" y1="19" x2="19" y2="4" class="hd-finger" />
+      <line x1="26" y1="19" x2="27" y2="4" class="hd-finger" />
+      <line x1="30" y1="21" x2="34" y2="9" class="hd-finger" />
+      <circle cx="14" cy="8" r="2.6" class="dot dot-a" />
+      <circle cx="19" cy="4" r="2.6" class="dot dot-b" />
+      <circle cx="27" cy="4" r="2.6" class="dot dot-b" />
+      <circle cx="34" cy="9" r="2.6" class="dot dot-a" />
+    </svg>
+    <div class="hd-text">
+      <h1>Gesture Control</h1>
+      <p class="hd-sub">Map hand poses to keystrokes</p>
+    </div>
+  </header>
+
+  <section class="panel">
+    <div class="row">
+      <label for="serverUrl">Server</label>
+      <input id="serverUrl" type="text" spellcheck="false" placeholder="ws://localhost:8765" />
+    </div>
+    <div class="row row-actions">
+      <button id="testBtn" class="btn btn-ghost">Test connection</button>
+      <span id="statusPill" class="pill pill-unknown">Not checked</span>
+    </div>
+  </section>
+
+  <nav class="tabs" role="tablist">
+    <button id="tabBtnGeneral" class="tab-btn active" role="tab" aria-selected="true">General</button>
+    <button id="tabBtnGaming" class="tab-btn" role="tab" aria-selected="false">Gaming</button>
+  </nav>
+
+  <!-- ============ GENERAL TAB ============ -->
+  <div id="tabGeneral" class="tab-panel active">
+    <section class="panel">
+      <button id="openCameraBtn" class="btn btn-primary btn-full">
+        <span class="rec-dot"></span> Open Hand Camera
+      </button>
+      <p class="hint">One-hand poses for everyday use — browsing, presentations, media. Opens a small window with the
+        live camera feed and pose overlay.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Gesture map</h2>
+      <div id="gestureList" class="gesture-list"><!-- rows injected by popup.js --></div>
+    </section>
+
+    <section class="panel">
+      <h2>Behavior</h2>
+      <div class="row row-check">
+        <label><input type="checkbox" id="holdMode" /> Hold key while gesture is held (for movement in games —
+          uncheck for Shorts/feeds: one tap per pose)</label>
+      </div>
+      <div class="row row-check">
+        <label><input type="checkbox" id="mirror" /> Mirror camera preview</label>
+      </div>
+      <div class="row row-check">
+        <label><input type="checkbox" id="showSkeleton" /> Show landmark overlay</label>
+      </div>
+      <div class="row">
+        <label for="stableFrames">Recognition steadiness</label>
+        <input id="stableFrames" type="range" min="1" max="12" step="1" />
+        <span id="stableFramesVal" class="range-val">5</span>
+      </div>
+      <div class="row">
+        <label for="cooldownMs">Tap cooldown (ms)</label>
+        <input id="cooldownMs" type="range" min="100" max="1200" step="50" />
+        <span id="cooldownMsVal" class="range-val">350</span>
+      </div>
+      <div class="row">
+        <label for="tapDwellMs">Tap dwell (ms)</label>
+        <input id="tapDwellMs" type="range" min="50" max="500" step="25" />
+        <span id="tapDwellMsVal" class="range-val">150</span>
+      </div>
+      <div class="row">
+        <label for="tapRefractoryMs">Min gap between taps (ms)</label>
+        <input id="tapRefractoryMs" type="range" min="200" max="1500" step="50" />
+        <span id="tapRefractoryMsVal" class="range-val">600</span>
+      </div>
+      <div class="row">
+        <label for="swipeSensitivity">Swipe sensitivity (%)</label>
+        <input id="swipeSensitivity" type="range" min="10" max="50" step="5" />
+        <span id="swipeSensitivityVal" class="range-val">25</span>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ GAMING TAB ============ -->
+  <div id="tabGaming" class="tab-panel">
+    <section class="panel">
+      <button id="openGamingBtn" class="btn btn-primary btn-full">
+        <span class="rec-dot rec-dot-amber"></span> Open Gaming Camera
+      </button>
+      <p class="hint">Two-hand virtual steering wheel for driving/racing games in a browser tab. Hold both hands up like
+        gripping a wheel — its tilt steers, and the keys below fire automatically.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Wheel keys</h2>
+      <div class="row">
+        <label for="steerLeftKey">Steer left</label>
+        <input id="steerLeftKey" class="keybind" type="text" readonly placeholder="Click then press a key" />
+      </div>
+      <div class="row">
+        <label for="steerRightKey">Steer right</label>
+        <input id="steerRightKey" class="keybind" type="text" readonly placeholder="Click then press a key" />
+      </div>
+      <div class="row">
+        <label for="accelerateKey">Accelerate</label>
+        <input id="accelerateKey" class="keybind" type="text" readonly placeholder="Click then press a key" />
+      </div>
+      <div class="row">
+        <label for="brakeKey">Brake</label>
+        <input id="brakeKey" class="keybind" type="text" readonly placeholder="Click then press a key" />
+      </div>
+      <div class="row">
+        <label for="hornKey">Horn</label>
+        <input id="hornKey" class="keybind" type="text" readonly placeholder="Click then press a key" />
+      </div>
+      <div class="row">
+        <label for="nitroKey">Nitro</label>
+        <input id="nitroKey" class="keybind" type="text" readonly placeholder="Click then press a key" />
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Steering feel</h2>
+      <div class="row">
+        <label for="deadzoneDeg">Deadzone (°)</label>
+        <input id="deadzoneDeg" type="range" min="2" max="30" step="1" />
+        <span id="deadzoneDegVal" class="range-val">8</span>
+      </div>
+      <div class="row">
+        <label for="steerReleaseDeg">Release angle (°)</label>
+        <input id="steerReleaseDeg" type="range" min="1" max="25" step="1" />
+        <span id="steerReleaseDegVal" class="range-val">5</span>
+      </div>
+      <div class="row">
+        <label for="steerSmoothing">Smoothing (%)</label>
+        <input id="steerSmoothing" type="range" min="10" max="60" step="5" />
+        <span id="steerSmoothingVal" class="range-val">25</span>
+      </div>
+      <div class="row">
+        <label for="maxAngleDeg">Max wheel angle (°)</label>
+        <input id="maxAngleDeg" type="range" min="20" max="80" step="5" />
+        <span id="maxAngleDegVal" class="range-val">45</span>
+      </div>
+      <div class="row row-check">
+        <label><input type="checkbox" id="autoAccelerate" /> Hold accelerate while both hands are on the wheel</label>
+      </div>
+      <div class="row row-check">
+        <label><input type="checkbox" id="brakeOnBothFists" /> Brake when both hands make a fist</label>
+      </div>
+    </section>
+  </div>
+
+  <footer class="ft">
+    <button id="resetBtn" class="btn btn-ghost btn-small">Reset to defaults</button>
+    <span id="savedNote" class="saved-note"></span>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="popup.js"></script>
+</body>
+
+</html>
